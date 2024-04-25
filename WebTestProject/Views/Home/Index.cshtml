@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using WebTestProject.Models;
+@model List<Employee>;
+
+@foreach(var i in Model)
+{
+    <p>@i.Id ________      @i.fName _____________   @i.lName ___________ @i.ses</p> <br>
+    
+
+}
+
+
