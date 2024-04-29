@@ -46,7 +46,52 @@ namespace WebTestProject.Services
 
                 result = dataRow["result"].ToString();
             }
-            return result;
+            return result + model.test.ToString();
+        }
+
+        public void Delete(int Id)
+        {
+            string sql = "delete Employee where Id = @Id";
+            var pr = new SqlParameter[]
+            {
+                new SqlParameter("@Id",Id)
+            };
+            using (var objectSql = Exec(sql, pr, TypeReturn.DataSet, TypeCommand.SqlQuery)) ;
+        }
+
+        public string Update(Employee model) 
+        {
+            string sql = "update Employee set fname = '@fname', lname =  '@lname' where Id = @Id ";
+            var pr = new SqlParameter[]
+            {
+                new SqlParameter("@fname" ,model.fName),
+                new SqlParameter("@lname" , model.lName),
+                new SqlParameter("@Id", model.Id)
+            };
+
+            using (var objectSql = Exec(sql, pr, TypeReturn.DataTable, TypeCommand.SqlQuery));
+
+            return "Succses;";
+       
+        }
+
+        public Employee GetById(int Id)
+        {
+            var sql = $"select * from Employee where Id = {Id}";
+            using (var objectSql = Exec(sql,new SqlParameter[] { }, TypeReturn.SqlDataReader, TypeCommand.SqlQuery))
+            {
+                SqlDataReader dateReader = objectSql.Reader;
+                dateReader.Read();
+
+                var response = new Employee()
+                {
+                    Id = dateReader.GetInt32(0),
+                    fName = dateReader.GetString(1),
+                    lName = dateReader.GetString(2)
+                };
+                return response;
+            }
+
         }
 
     }

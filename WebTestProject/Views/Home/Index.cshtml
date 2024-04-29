@@ -6,7 +6,11 @@
 
 @foreach(var i in Model)
 {
-    <p>@i.Id ________      @i.fName _____________   @i.lName ___________ @i.ses</p> <br>
+    <p>@i.Id ________      @i.fName _____________   @i.lName ___________ @i.ses</p>
+
+    <a asp-action="GetById" asp-route-Id="@i.Id" class="text-danger ml-1">Udate</a>
+    <a asp-action="Delete" asp-route-Id="@i.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">Delete</a>
+    <br>
     
 
 }

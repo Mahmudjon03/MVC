@@ -37,6 +37,20 @@ namespace WebTestProject.Controllers
             }
             return View(employees);
         }
+        //[HttpGet("Edit")]
+        //public IActionResult Edit(int Id)
+        //{
+
+        //}
+        [HttpGet("GetById")]
+        public IActionResult GetById(int Id)
+        {
+            var employees = _service.GetById(Id);
+
+            return View(employees);
+        }
+
+        
 
         [HttpGet("Create")]
         public IActionResult Create()
@@ -46,9 +60,9 @@ namespace WebTestProject.Controllers
 
 
         [HttpPost("Create")]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(Employee employee )
         {
-
+            if (employee.test) employee.fName ="checkbox working!"; 
             var result = _service.AddEmployee(employee);
 
             return RedirectToAction(nameof(Index), result);
@@ -63,6 +77,12 @@ namespace WebTestProject.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public void Delete(int id)
+        {
+            _service.Delete(id);
+
+            RedirectToAction(nameof(Index));
         }
     }
 }
