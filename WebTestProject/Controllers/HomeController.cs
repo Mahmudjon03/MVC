@@ -84,5 +84,10 @@ namespace WebTestProject.Controllers
 
             RedirectToAction(nameof(Index));
         }
+
+        public void Test()
+        {
+            _service.TestTable();
+        }
     }
 }

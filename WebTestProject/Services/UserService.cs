@@ -32,9 +32,13 @@ namespace WebTestProject.Services
         public string AddEmployee(Employee model)
         {
             var sql = $"insert into Employee  values('{model.fName}','{model.lName}',2); ";
-            foreach(var i in model.Works)
+
+            if (model.Works != null)
             {
-                sql += $"insert into Works values('{i.Name}',(select Id from Employee where fname = '{model.fName}'));";
+                foreach (var i in model.Works)
+                {
+                    sql += $"insert into Works values('{i.Name}',(select Id from Employee where fname = '{model.fName}'));";
+                }
             }
             sql += "  select 'Success' as result ;";
             string result;
@@ -76,7 +80,7 @@ namespace WebTestProject.Services
         }
 
         public Employee GetById(int Id)
-        {
+            {
             var sql = $"select * from Employee where Id = {Id}";
             using (var objectSql = Exec(sql,new SqlParameter[] { }, TypeReturn.SqlDataReader, TypeCommand.SqlQuery))
             {
@@ -93,6 +97,32 @@ namespace WebTestProject.Services
             }
 
         }
+
+        public string TestTable()
+        {
+            var sql = "Tests";
+            string lname = "abdulo";
+            int cityId = 2;
+            var name = new DataTable();
+            name.Columns.Add("Id",typeof(int));
+            name.Columns.Add("Name", typeof(string));
+
+
+            var pr = new SqlParameter[]
+            {
+                new SqlParameter("@name",name),
+                new SqlParameter("@lname",lname),
+                new SqlParameter("@cityId",cityId)
+            };
+            using (var sqlObject = Exec(sql, pr, TypeReturn.SqlDataReader, TypeCommand.SqlStoredProcedure))
+            {
+                var dr = sqlObject.Reader;
+                dr.Read();
+                return dr["test"].ToString()!;
+                 
+            }
+        } 
+
 
     }
 }
